@@ -7,24 +7,25 @@ function fetch_products_from_local_storage() {
   return products;
 }
 
-product = {
-  id: 1,
-  name: "chleb",
-  amount: "1",
-};
-
 add_new_product_to_local_storage = function (product) {
   var products = fetch_products_from_local_storage();
   products.push(product);
   localStorage.setItem("products", JSON.stringify(products));
 };
 
-console.log(fetch_products_from_local_storage());
-
 function create_product() {
-  console.log(
-    document.querySelectorAll('#addProductToReceipe form input[type="text"]')
-  );
+  product = parse_product_from_form();
+  add_new_product_to_local_storage(product);
+}
+
+function parse_product_from_form() {
+  var product = {};
+  var form = document.querySelector("#addProductToReceipe form");
+  var inputs = form.querySelectorAll("input[type=text]");
+  inputs.forEach(function (input) {
+    product[input.name] = input.value;
+  });
+  return product;
 }
 
 function clear_text_inputs() {
