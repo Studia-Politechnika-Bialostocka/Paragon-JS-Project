@@ -98,6 +98,15 @@ td {
 
 footer {
   text-align: center;
+  font-size: 0.8rem;
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+footer a {
+  text-decoration: underline;
+  color: #8e54e9
 }
