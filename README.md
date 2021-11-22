@@ -1,5 +1,10 @@
 # Projekt 1 - Paragon
 
+## 🔗 Link to project
+
+https://paragon-js-project.vercel.app/
+
+
 ## 📄 Treść zadania
 
 To zadanie realizowane jest w parach. Czas na jego wykonanie - dwa tygodnie.
