@@ -7,10 +7,30 @@ function fetch_products_from_local_storage() {
   return products;
 }
 
-add_new_product_to_local_storage = function(product) {
-    var products = fetch_products_from_local_storage();
-    products.push(product);
-    localStorage.setItem("products", JSON.stringify(products));
-}
+product = {
+  id: 1,
+  name: "chleb",
+  amount: "1",
+};
+
+add_new_product_to_local_storage = function (product) {
+  var products = fetch_products_from_local_storage();
+  products.push(product);
+  localStorage.setItem("products", JSON.stringify(products));
+};
 
 console.log(fetch_products_from_local_storage());
+
+function create_product() {
+  console.log(
+    document.querySelectorAll('#addProductToReceipe form input[type="text"]')
+  );
+}
+
+function clear_text_inputs() {
+  document
+    .querySelectorAll('#addProductToReceipe form input[type="text"]')
+    .forEach(function (input) {
+      input.value = "";
+    });
+}

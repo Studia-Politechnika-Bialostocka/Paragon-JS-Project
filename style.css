@@ -26,13 +26,13 @@ td {
 
 /* ============================================ */
 
-.addProductToReceipe {
+#addProductToReceipe {
   max-width: 1440px;
   margin: 10vh auto;
   text-align: center;
 }
 
-.addProductToReceipe form {
+#addProductToReceipe form {
   margin: 0 auto;
   text-align: left;
   display: flex;
@@ -40,13 +40,13 @@ td {
   max-width: 300px;
 }
 
-.addProductToReceipe form label {
+#addProductToReceipe form label {
   font-size: 90%;
   margin-bottom: 5px;
   color: rgb(60, 60, 60);
 }
 
-.addProductToReceipe form input {
+#addProductToReceipe form input {
   margin-bottom: 8px;
   border-radius: 5px;
   padding: 10px;
@@ -54,7 +54,7 @@ td {
   font-weight: bold;
 }
 
-.addProductToReceipe form .buttons {
+#addProductToReceipe form .buttons {
   margin-top: 5px;
   display: flex;
 }
@@ -67,7 +67,7 @@ td {
     #4776e6 100%
   );
 }
-.addProductToReceipe form .btn-grad {
+#addProductToReceipe form .btn-grad {
   margin-right: 10px;
   padding: 10px 20px;
   transition: 0.5s;
@@ -85,7 +85,7 @@ td {
   text-decoration: none;
 }
 
-.addProductToReceipe form .buttons .clear {
+#addProductToReceipe form .buttons .clear {
   border: none;
   background-color: transparent;
   font-size: 1rem;

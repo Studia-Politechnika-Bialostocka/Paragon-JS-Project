@@ -78,8 +78,8 @@
       </table>
     </div>
 
-    <div class="addProductToReceipe">
-      <form action="">
+    <div id="addProductToReceipe">
+      <form onsubmit="create_product(); return false;">
         <label for="">Nazwa</label>
         <input name="nazwa" type="text" />
         <label for="">Ilość</label>
@@ -88,7 +88,7 @@
         <input name="cena" type="text" />
         <div class="buttons">
           <input class="btn-grad" type="submit" value="Dodaj"></input>
-          <input class="clear" value="Wyczyść"></input>
+          <input onclick="clear_text_inputs()" class="clear" value="Wyczyść"></input>
         </div>
       </form>
     </div>
