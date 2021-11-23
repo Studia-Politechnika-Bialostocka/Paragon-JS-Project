@@ -12,6 +12,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <div class="recipeTable">
@@ -27,52 +34,17 @@
             <th>ILOŚĆ</th>
             <th>CENA</th>
             <th>SUMA</th>
+            <th>AKCJA</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Kasza z kurczakiem</td>
-            <td>1</td>
-            <td>2,50</td>
-            <td>2,50</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Kasza z kurczakiem</td>
-            <td>1</td>
-            <td>2,50</td>
-            <td>2,50</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Kasza z kurczakiem</td>
-            <td>1</td>
-            <td>2,50</td>
-            <td>2,50</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Kasza z kurczakiem</td>
-            <td>1</td>
-            <td>2,50</td>
-            <td>2,50</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>Kasza z kurczakiem</td>
-            <td>1</td>
-            <td>2,50</td>
-            <td>2,50</td>
-          </tr>
-        </tbody>
+        <tbody></tbody>
         <tfoot>
           <tr>
             <td></td>
             <td></td>
             <td></td>
             <th>RAZEM</th>
-            <th>9,80 zł</th>
+            <th id="receipeTotal">0 zł</th>
           </tr>
         </tfoot>
       </table>
@@ -81,14 +53,14 @@
     <div id="addProductToReceipe">
       <form onsubmit="create_product(); return false;">
         <label for="">Nazwa</label>
-        <input name="nazwa" type="text" />
+        <input name="nazwa" type="text" required />
         <label for="">Ilość</label>
-        <input name="ilosc" type="text" />
+        <input name="ilosc" type="number" required />
         <label for="">Cena</label>
-        <input name="cena" type="text" />
+        <input name="cena" type="number" step="0.01" required />
         <div class="buttons">
-          <input class="btn-grad" type="submit" value="Dodaj"></input>
-          <input onclick="clear_text_inputs()" class="clear" value="Wyczyść"></input>
+          <input class="btn-grad" type="submit" value="Dodaj" />
+          <button onclick="clear_text_inputs()" class="clear">Wyczyść</button>
         </div>
       </form>
     </div>
