@@ -1,9 +1,10 @@
-function main() {
+function rerender_page() {
+  clear_inputs();
   let products = fetch_products_from_local_storage();
   render_products_in_receipeTable(products);
-  render_receipe_total(products);
+  render_receipe_total_to_cell(products);
 }
-main();
+rerender_page();
 
 function fetch_products_from_local_storage() {
   var products = [];
@@ -53,11 +54,9 @@ function update_product(lp) {
   products[lp - 1] = product;
   localStorage.removeItem("products");
   localStorage.setItem("products", JSON.stringify(products));
-  main();
-  clear_text_inputs();
 }
 
-function update_form_with_product_value(lp) {
+function insert_data_to_form(lp) {
   let products = fetch_products_from_local_storage();
   let product = products[lp - 1];
   document.querySelector("#addProductToReceipe input[name='nazwa']").value =
@@ -66,30 +65,35 @@ function update_form_with_product_value(lp) {
     product.ilosc;
   document.querySelector("#addProductToReceipe input[name='cena']").value =
     product.cena;
+  document.querySelector("form input[type=submit]").value = "Zmień";
   document.querySelector("form").onsubmit = function () {
     update_product(lp);
+    rerender_page();
     return false;
   };
-  document.querySelector("form input[type=submit]").value = "Zmień";
 }
 
-function edit_product(lp) {
+function change_title_of_form(lp) {
   delete_all_h3_from_form();
   form = document.querySelector("#addProductToReceipe");
   form.insertAdjacentHTML("afterbegin", `<h3>Edytuj produkt LP: ${lp}</h3>`);
-  update_form_with_product_value(lp);
+}
+
+function edit_product(lp) {
+  change_title_of_form(lp);
+  insert_data_to_form(lp);
 }
 
 function delete_product(lp) {
-  let index_to_del = lp - 1;
+  let product_index = lp - 1;
   let products = fetch_products_from_local_storage();
+  products.splice(product_index, 1);
   localStorage.removeItem("products");
-  products.splice(index_to_del, 1);
   localStorage.setItem("products", JSON.stringify(products));
-  main();
+  rerender_page();
 }
 
-function render_receipe_total(products) {
+function render_receipe_total_to_cell(products) {
   let receipe_total = 0;
   products.forEach((product) => {
     receipe_total += product.ilosc * product.cena;
@@ -99,30 +103,25 @@ function render_receipe_total(products) {
   th.innerHTML = `${receipe_total} zł`;
 }
 
-add_new_product_to_local_storage = function (product) {
-  var products = fetch_products_from_local_storage();
+function create_product() {
+  let product = parse_product_from_form();
+  let products = fetch_products_from_local_storage();
   products.push(product);
   localStorage.setItem("products", JSON.stringify(products));
-};
-
-function create_product() {
-  product = parse_product_from_form();
-  add_new_product_to_local_storage(product);
-  clear_text_inputs();
-  main();
+  rerender_page();
 }
 
 function parse_product_from_form() {
-  var product = {};
-  var form = document.querySelector("#addProductToReceipe form");
-  var inputs = form.querySelectorAll("input[type=text], input[type=number]");
-  inputs.forEach(function (input) {
+  let product = {};
+  let form = document.querySelector("#addProductToReceipe form");
+  let inputs = form.querySelectorAll("input[type=text], input[type=number]");
+  inputs.forEach((input) => {
     product[input.name] = input.value;
   });
   return product;
 }
 
-function clear_text_inputs() {
+function clear_inputs() {
   delete_all_h3_from_form();
   document.querySelector("form input[type=submit]").value = "Dodaj";
   document.querySelector("form").reset();
