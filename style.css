@@ -130,3 +130,10 @@ footer a {
   text-decoration: underline;
   color: #8e54e9;
 }
+
+
+
+
+.dragging {
+  filter: blur(4px);
+}
