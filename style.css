@@ -32,12 +32,20 @@ td {
   background-color: transparent;
 }
 
+.edit-product {
+  color: #4776e6;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  background-color: transparent;
+}
+
 /* ============================================ */
 
 #addProductToReceipe {
-  max-width: 1440px;
+  max-width: 300px;
   margin: 10vh auto;
-  text-align: center;
+  text-align: left;
 }
 
 #addProductToReceipe form {
@@ -116,5 +124,5 @@ footer {
 
 footer a {
   text-decoration: underline;
-  color: #8e54e9
+  color: #8e54e9;
 }
