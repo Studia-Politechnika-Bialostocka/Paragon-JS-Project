@@ -3,6 +3,7 @@ function rerender_page() {
   let products = fetch_products_from_local_storage();
   render_products_in_receipeTable(products);
   render_receipe_total_to_cell(products);
+  add_events_listeners_for_changing_position_in_table();
 }
 rerender_page();
 
@@ -24,7 +25,7 @@ function render_products_in_receipeTable(products) {
     tbody.insertAdjacentHTML(
       "beforeend",
       `<tr draggable="true" class="draggable"> 
-        <td>${lp}</td> 
+        <td class="lp">${lp}</td> 
         <td>${product.nazwa}</td> 
         <td>${product.ilosc}</td> 
         <td>${product.cena} zł</td> 
@@ -128,3 +129,68 @@ function clear_inputs() {
 }
 
 // todo: add popup with information about adding new product to receipe and delete product from receipe
+function parse_products_lp_from_table() {
+  let products = [];
+  let tbody = document.querySelector("tbody");
+  let trs = tbody.querySelectorAll("tr");
+  trs.forEach((tr) => {
+    let lp = tr.querySelector("td.lp");
+    products.push(parseInt(lp.innerHTML));
+  });
+  return products;
+}
+
+function change_position_of_products_in_local_storage() {
+  let products = fetch_products_from_local_storage();
+  let products_lp = parse_products_lp_from_table();
+  products = products_lp.map((lp) => products[lp - 1]);
+  localStorage.removeItem("products");
+  localStorage.setItem("products", JSON.stringify(products));
+}
+
+function add_events_listeners_for_changing_position_in_table() {
+  const draggables = document.querySelectorAll(".draggable");
+  const container = document.querySelector("tbody");
+
+  draggables.forEach((draggable) => {
+    draggable.addEventListener("dragstart", () => {
+      draggable.classList.add("dragging");
+    });
+
+    draggable.addEventListener("dragend", () => {
+      draggable.classList.remove("dragging");
+      change_position_of_products_in_local_storage();
+      rerender_page();
+    });
+  });
+
+  container.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(container, e.clientY);
+    const draggable = document.querySelector(".dragging");
+    if (afterElement == null) {
+      container.appendChild(draggable);
+    } else {
+      container.insertBefore(draggable, afterElement);
+    }
+  });
+
+  function getDragAfterElement(container, y) {
+    const draggableElements = [
+      ...container.querySelectorAll(".draggable:not(.dragging)"),
+    ];
+
+    return draggableElements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      },
+      { offset: Number.NEGATIVE_INFINITY }
+    ).element;
+  }
+}
