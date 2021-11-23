@@ -24,6 +24,10 @@ td {
   padding: 10px;
 }
 
+tbody tr {
+  cursor: move;
+}
+
 .delete-product {
   color: red;
   cursor: pointer;

@@ -23,7 +23,7 @@ function render_products_in_receipeTable(products) {
     lp += 1;
     tbody.insertAdjacentHTML(
       "beforeend",
-      `<tr> 
+      `<tr draggable="true"> 
         <td>${lp}</td> 
         <td>${product.nazwa}</td> 
         <td>${product.ilosc}</td> 
