@@ -8,7 +8,6 @@ draggables.forEach((draggable) => {
 
   draggable.addEventListener("dragend", () => {
     draggable.classList.remove("dragging");
-    rerender_page();
   });
 });
 
@@ -17,7 +16,6 @@ container.addEventListener("dragover", (e) => {
   const afterElement = getDragAfterElement(container, e.clientY);
   const draggable = document.querySelector(".dragging");
   if (afterElement == null) {
-    console.log(draggable);
     container.appendChild(draggable);
   } else {
     container.insertBefore(draggable, afterElement);
