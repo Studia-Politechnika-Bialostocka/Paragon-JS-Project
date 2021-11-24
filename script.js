@@ -1,3 +1,4 @@
+rerender_page();
 function rerender_page() {
   clear_inputs();
   let products = fetch_products_from_local_storage();
@@ -5,7 +6,6 @@ function rerender_page() {
   render_receipe_total_to_cell(products);
   add_events_listeners_for_changing_position_in_table();
 }
-rerender_page();
 
 function fetch_products_from_local_storage() {
   var products = [];
@@ -29,7 +29,7 @@ function render_products_in_receipeTable(products) {
         <td>${product.nazwa}</td> 
         <td>${product.ilosc}</td> 
         <td>${product.cena} zł</td> 
-        <td>${product.ilosc * product.cena} zł</td> 
+        <td>${(product.ilosc * product.cena).toFixed(2)} zł</td> 
         <td>
         <button class="delete-product" onclick=delete_product(${lp}) title="Usuń produkt">
           <i class="fas fa-trash-alt"></i>
@@ -43,18 +43,20 @@ function render_products_in_receipeTable(products) {
   });
 }
 
+function render_receipe_total_to_cell(products) {
+  let receipe_total = 0;
+  products.forEach((product) => {
+    receipe_total += product.ilosc * product.cena;
+  });
+
+  var th = document.querySelector("#receipeTotal");
+  th.innerHTML = `${receipe_total.toFixed(2)} zł`;
+}
+
 function delete_all_h3_from_form() {
   document.querySelectorAll("#addProductToReceipe h3").forEach((h3) => {
     h3.remove();
   });
-}
-
-function update_product(lp) {
-  let products = fetch_products_from_local_storage();
-  let product = parse_product_from_form();
-  products[lp - 1] = product;
-  localStorage.removeItem("products");
-  localStorage.setItem("products", JSON.stringify(products));
 }
 
 function insert_data_to_form(lp) {
@@ -80,9 +82,35 @@ function change_title_of_form(lp) {
   form.insertAdjacentHTML("afterbegin", `<h3>Edytuj produkt LP: ${lp}</h3>`);
 }
 
+function clear_inputs() {
+  delete_all_h3_from_form();
+  document.querySelector("form input[type=submit]").value = "Dodaj";
+  document.querySelector("form").reset();
+}
+
 function edit_product(lp) {
   change_title_of_form(lp);
   insert_data_to_form(lp);
+  console.info("Product edited");
+}
+
+function update_product(lp) {
+  let products = fetch_products_from_local_storage();
+  let product = parse_product_from_form();
+  products[lp - 1] = product;
+  localStorage.removeItem("products");
+  localStorage.setItem("products", JSON.stringify(products));
+  console.info("Product updated");
+  display_success_popup("Successfully updated product 😀");
+}
+
+function create_product() {
+  let product = parse_product_from_form();
+  let products = fetch_products_from_local_storage();
+  products.push(product);
+  localStorage.setItem("products", JSON.stringify(products));
+  rerender_page();
+  display_success_popup("Successfully created product 🚀");
 }
 
 function delete_product(lp) {
@@ -92,43 +120,17 @@ function delete_product(lp) {
   localStorage.removeItem("products");
   localStorage.setItem("products", JSON.stringify(products));
   rerender_page();
+  display_success_popup("Successfully deleted product 🗑️");
 }
 
-function render_receipe_total_to_cell(products) {
-  let receipe_total = 0;
-  products.forEach((product) => {
-    receipe_total += product.ilosc * product.cena;
-  });
-
-  var th = document.querySelector("#receipeTotal");
-  th.innerHTML = `${receipe_total} zł`;
-}
-
-function create_product() {
-  let product = parse_product_from_form();
+function change_position_of_products_in_local_storage() {
   let products = fetch_products_from_local_storage();
-  products.push(product);
+  let products_lp = parse_products_lp_from_table();
+  products = products_lp.map((lp) => products[lp - 1]);
+  localStorage.removeItem("products");
   localStorage.setItem("products", JSON.stringify(products));
-  rerender_page();
 }
 
-function parse_product_from_form() {
-  let product = {};
-  let form = document.querySelector("#addProductToReceipe form");
-  let inputs = form.querySelectorAll("input[type=text], input[type=number]");
-  inputs.forEach((input) => {
-    product[input.name] = input.value;
-  });
-  return product;
-}
-
-function clear_inputs() {
-  delete_all_h3_from_form();
-  document.querySelector("form input[type=submit]").value = "Dodaj";
-  document.querySelector("form").reset();
-}
-
-// todo: add popup with information about adding new product to receipe and delete product from receipe
 function parse_products_lp_from_table() {
   let products = [];
   let tbody = document.querySelector("tbody");
@@ -140,12 +142,14 @@ function parse_products_lp_from_table() {
   return products;
 }
 
-function change_position_of_products_in_local_storage() {
-  let products = fetch_products_from_local_storage();
-  let products_lp = parse_products_lp_from_table();
-  products = products_lp.map((lp) => products[lp - 1]);
-  localStorage.removeItem("products");
-  localStorage.setItem("products", JSON.stringify(products));
+function parse_product_from_form() {
+  let product = {};
+  let form = document.querySelector("#addProductToReceipe form");
+  let inputs = form.querySelectorAll("input[type=text], input[type=number]");
+  inputs.forEach((input) => {
+    product[input.name] = input.value;
+  });
+  return product;
 }
 
 function add_events_listeners_for_changing_position_in_table() {
@@ -193,4 +197,15 @@ function add_events_listeners_for_changing_position_in_table() {
       { offset: Number.NEGATIVE_INFINITY }
     ).element;
   }
+}
+
+function display_success_popup(message) {
+  document
+    .querySelector("body")
+    .insertAdjacentHTML("afterbegin", `<div id="popup"></div>`);
+  let popup = document.querySelector("#popup");
+  popup.insertAdjacentHTML("afterbegin", `<p>${message}</p>`);
+  setTimeout(() => {
+    popup.remove();
+  }, 5000);
 }

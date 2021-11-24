@@ -2,6 +2,42 @@
   font-family: "Inter", sans-serif;
 }
 
+#popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: #04e762;
+  z-index: 9999;
+  border-radius: 5px;
+  animation: popup 5s ease-in-out forwards;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+#popup p {
+  text-align: center;
+  padding: 5px 10px;
+  color: #181818;
+  font-weight: bold;
+}
+
 .recipeTable {
   text-align: center;
 }
@@ -130,9 +166,6 @@ footer a {
   text-decoration: underline;
   color: #8e54e9;
 }
-
-
-
 
 .dragging {
   filter: blur(4px);
