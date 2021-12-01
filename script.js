@@ -70,6 +70,7 @@ function insert_data_to_form(lp) {
     product.cena;
   document.querySelector("form input[type=submit]").value = "Zmień";
   document.querySelector("form").onsubmit = function () {
+    console.log("insert data to form");
     update_product(lp);
     rerender_page();
     return false;
@@ -85,7 +86,12 @@ function change_title_of_form(lp) {
 function clear_inputs() {
   delete_all_h3_from_form();
   document.querySelector("form input[type=submit]").value = "Dodaj";
+  document.querySelector("form input[type=submit]").value = "Dodaj";
   document.querySelector("form").reset();
+  document.querySelector("form").onsubmit = function () {
+    create_product();
+    return false;
+  };
 }
 
 function edit_product(lp) {
@@ -101,10 +107,12 @@ function update_product(lp) {
   localStorage.removeItem("products");
   localStorage.setItem("products", JSON.stringify(products));
   console.info("Product updated");
+  rerender_page();
   display_success_popup("Successfully updated product 😀");
 }
 
 function create_product() {
+  console.log("dodaj produkt");
   let product = parse_product_from_form();
   let products = fetch_products_from_local_storage();
   products.push(product);
